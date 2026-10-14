@@ -1,6 +1,6 @@
 # QR Check-in App
 
-A mobile-first orienteering competition app built for MTA (General Directorate of Mineral Research and Exploration) Education Week events. Participants scan QR codes placed at 7 locations across the Gebze Campus and compete to complete the course in the fastest time.
+A mobile-first orienteering competition app I built during my internship at TÜBİTAK for an event run by the National Technology Workshops (Milli Teknoloji Atölyeleri, MTA) programme. Participants scan QR codes placed at 7 locations across the Gebze Campus and compete to complete the course in the fastest time.
 
 ## Features
 
@@ -16,7 +16,7 @@ A mobile-first orienteering competition app built for MTA (General Directorate o
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 15 (App Router) |
+| Framework | Next.js 16 (App Router) |
 | Language | TypeScript |
 | Styling | Tailwind CSS |
 | Database | Supabase (PostgreSQL) |
@@ -102,8 +102,8 @@ npm run dev
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_service_role_key
-NEXT_PUBLIC_ADMIN_KEY=leaderboard_password
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key   # public anon key, never the service-role key
+LEADERBOARD_PASSWORD=choose_a_strong_password          # server-side only
 ```
 
 ## Adding Participants
@@ -135,3 +135,10 @@ DELETE FROM users;
 ```
 
 > Do **not** delete from `katilimcilar` unless you want to re-upload the participant list.
+
+## Known limitations and next steps
+
+- The leaderboard password only gates the leaderboard page; the `/api/leaderboard` endpoint itself is public. A production version would check the password (or a session token) on the server for that route too.
+- Participant identity is stored in `localStorage`, so clearing browser data or switching device loses the session. A proper version would use Supabase Auth.
+- `@vercel/kv` and `pg` are listed in `package.json` from an earlier storage approach and are no longer used; they can be removed.
+
